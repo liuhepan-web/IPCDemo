@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- IPC Console palette — no purple -->
+    <color name="ipc_bg">#EEF2F5</color>
+    <color name="ipc_surface">#FFFFFF</color>
+    <color name="ipc_ink">#15202B</color>
+    <color name="ipc_ink_secondary">#5B6B79</color>
+    <color name="ipc_ink_muted">#8A9AA8</color>
+    <color name="ipc_primary">#1F6F8B</color>
+    <color name="ipc_primary_dark">#16576D</color>
+    <color name="ipc_accent">#D97706</color>
+    <color name="ipc_border">#D3DCE4</color>
+    <color name="ipc_header">#1B2E3A</color>
+    <color name="ipc_header_text">#F5F8FA</color>
+    <color name="ipc_status_ok">#0F766E</color>
+    <color name="ipc_danger">#B42318</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>

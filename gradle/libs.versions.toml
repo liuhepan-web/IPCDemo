@@ -1,0 +1,45 @@
+[versions]
+agp = "8.7.3"
+appcompat = "1.7.0"
+material = "1.12.0"
+constraintlayout = "2.1.4"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+# 文档最新稳定版：https://developer.tuya.com/cn/docs/app-development/integrated?id=Ka69nt96cw0uj
+thingsmart = "7.8.0"
+ipcsdk = "7.8.1"
+fastjson = "1.1.67.android"
+okhttpUrlconnection = "3.14.9"
+recyclerview = "1.3.2"
+fresco = "2.10.0"
+timeline = "1.1.0"
+zxing = "3.5.3"
+# 与 thingsmart 7.8 对齐；仓库 latest=7.8.18
+# https://developer.tuya.com/cn/docs/app-development/mini-app-sdk-integration?id=Kcwzmgsmy3zg4
+bizBom = "7.8.18"
+
+[libraries]
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+google-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+thingsmart = { group = "com.thingclips.smart", name = "thingsmart", version.ref = "thingsmart" }
+thingsmart-ipcsdk = { group = "com.thingclips.smart", name = "thingsmart-ipcsdk", version.ref = "ipcsdk" }
+thingsmart-ipc-timeline = { group = "com.thingclips.smart", name = "thingsmart-ipc-camera-timeline", version.ref = "timeline" }
+thingsmart-bizbundles-bom = { group = "com.thingclips.smart", name = "thingsmart-BizBundlesBom", version.ref = "bizBom" }
+thingsmart-bizbundle-miniapp = { group = "com.thingclips.smart", name = "thingsmart-bizbundle-miniapp" }
+thingsmart-bizbundle-basekit = { group = "com.thingclips.smart", name = "thingsmart-bizbundle-basekit" }
+thingsmart-bizbundle-bizkit = { group = "com.thingclips.smart", name = "thingsmart-bizbundle-bizkit" }
+thingsmart-bizbundle-ipckit = { group = "com.thingclips.smart", name = "thingsmart-bizbundle-ipckit" }
+alibaba-fastjson = { group = "com.alibaba", name = "fastjson", version.ref = "fastjson" }
+okhttp-urlconnection = { group = "com.squareup.okhttp3", name = "okhttp-urlconnection", version.ref = "okhttpUrlconnection" }
+facebook-fresco = { group = "com.facebook.fresco", name = "fresco", version.ref = "fresco" }
+facebook-soloader = { group = "com.facebook.soloader", name = "soloader", version = "0.10.5" }
+zxing-core = { group = "com.google.zxing", name = "core", version.ref = "zxing" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }

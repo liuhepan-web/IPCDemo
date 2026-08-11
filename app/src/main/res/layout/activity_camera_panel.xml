@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ipc_bg"
+    android:orientation="vertical">
+
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/headerBar"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@drawable/bg_header"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/back"
+            android:src="@drawable/ic_back"
+            android:tint="@color/ipc_header_text" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/ipc_preview"
+                android:textAppearance="@style/TextAppearance.IPCDemo.HeaderTitle"
+                android:textSize="17sp" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btnFullscreen"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/ipc_fullscreen"
+            android:src="@drawable/ic_fullscreen"
+            android:tint="@color/ipc_header_text" />
+    </LinearLayout>
+
+    <!-- Preview -->
+    <FrameLayout
+        android:id="@+id/videoContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#000000"
+        android:minHeight="180dp">
+
+        <com.thingclips.smart.camera.middleware.widget.ThingCameraView
+            android:id="@+id/camera_video_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|top"
+            android:layout_margin="10dp"
+            android:background="@drawable/bg_status_chip"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:text="@string/ipc_connecting"
+            android:textColor="@android:color/white"
+            android:textSize="11sp"
+            tools:text="预览中" />
+
+        <TextView
+            android:id="@+id/tvDeviceCaps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|top"
+            android:layout_margin="10dp"
+            android:background="@drawable/bg_status_chip"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:textColor="@android:color/white"
+            android:textSize="11sp"
+            android:visibility="gone"
+            tools:text="多目 · 低功耗"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tvZoomHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="10dp"
+            android:background="@drawable/bg_status_chip"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:text="@string/ipc_zoom_hint"
+            android:textColor="@android:color/white"
+            android:textSize="10sp" />
+
+        <ImageButton
+            android:id="@+id/btnFsBack"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_gravity="start|top"
+            android:layout_margin="12dp"
+            android:background="@drawable/bg_fs_back"
+            android:contentDescription="@string/back"
+            android:padding="10dp"
+            android:src="@drawable/ic_back"
+            android:visibility="gone" />
+
+        <HorizontalScrollView
+            android:id="@+id/fsActionBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="#CC0D1117"
+            android:scrollbars="none"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="12dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFsMute"
+                    style="@style/Widget.IPCDemo.Button.FsChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/ipc_unmute" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFsClarity"
+                    style="@style/Widget.IPCDemo.Button.FsChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/ipc_hd" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFsTalk"
+                    style="@style/Widget.IPCDemo.Button.QuickPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/ipc_talk" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFsSnapshot"
+                    style="@style/Widget.IPCDemo.Button.FsChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="@string/ipc_snapshot" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFsRecord"
+                    style="@style/Widget.IPCDemo.Button.FsChip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ipc_record" />
+            </LinearLayout>
+        </HorizontalScrollView>
+    </FrameLayout>
+
+    <!-- Bottom control sheet -->
+    <LinearLayout
+        android:id="@+id/actionBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_control_sheet"
+        android:elevation="4dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="12dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/section_live_controls"
+            android:textAppearance="@style/TextAppearance.IPCDemo.Label" />
+
+        <!-- Primary: talk / capture / record -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnTalk"
+                style="@style/Widget.IPCDemo.Button.QuickPrimary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1.2"
+                android:text="@string/ipc_talk" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSnapshot"
+                style="@style/Widget.IPCDemo.Button.Quick"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:text="@string/ipc_snapshot" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRecord"
+                style="@style/Widget.IPCDemo.Button.Quick"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/ipc_record" />
+        </LinearLayout>
+
+        <!-- Secondary: mute / clarity / video talk -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnMute"
+                style="@style/Widget.IPCDemo.Button.Quick"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:text="@string/ipc_unmute" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnClarity"
+                style="@style/Widget.IPCDemo.Button.Quick"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:text="@string/ipc_hd" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnVideoTalk"
+                style="@style/Widget.IPCDemo.Button.Quick"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/ipc_video_talk"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/featureScroll"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:overScrollMode="ifContentScrolls">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="12dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/section_features"
+                android:textAppearance="@style/TextAppearance.IPCDemo.Label" />
+
+            <!-- Row 1: PTZ / SD / Playback -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPtz"
+                    style="@style/Widget.IPCDemo.Button.Feature"
+                    android:layout_width="0dp"
+                    android:layout_height="68dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/ipc_ptz_expand" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSdManage"
+                    style="@style/Widget.IPCDemo.Button.Feature"
+                    android:layout_width="0dp"
+                    android:layout_height="68dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/ipc_sd_manage" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPlayback"
+                    style="@style/Widget.IPCDemo.Button.Feature"
+                    android:layout_width="0dp"
+                    android:layout_height="68dp"
+                    android:layout_weight="1"
+                    android:text="@string/ipc_playback" />
+            </LinearLayout>
+
+            <!-- Row 2: Album / Message / Cloud / VAS -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAlbum"
+                    style="@style/Widget.IPCDemo.Button.Feature"
+                    android:layout_width="0dp"
+                    android:layout_height="68dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/ipc_album" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnMessage"
+                    style="@style/Widget.IPCDemo.Button.Feature"
+                    android:layout_width="0dp"
+                    android:layout_height="68dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/ipc_message" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnCloud"
+                    style="@style/Widget.IPCDemo.Button.Feature"
+                    android:layout_width="0dp"
+                    android:layout_height="68dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/ipc_cloud"
+                    android:visibility="gone" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnVas"
+                    style="@style/Widget.IPCDemo.Button.Feature"
+                    android:layout_width="0dp"
+                    android:layout_height="68dp"
+                    android:layout_weight="1"
+                    android:text="@string/ipc_vas"
+                    android:textColor="@color/ipc_accent"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <!-- PTZ board -->
+            <LinearLayout
+                android:id="@+id/ptzBoard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/bg_panel"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ipc_ptz"
+                    android:textAppearance="@style/TextAppearance.IPCDemo.Label" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="12dp"
+                    android:text="@string/ipc_ptz_hint"
+                    android:textColor="@color/ipc_ink_secondary"
+                    android:textSize="12sp" />
+
+                <LinearLayout
+                    android:layout_width="220dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/btnPtzUp"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_ptz_dir"
+                        android:contentDescription="@string/ipc_ptz_up"
+                        android:padding="14dp"
+                        android:rotation="90"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_back"
+                        android:tint="@color/ipc_primary" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/btnPtzLeft"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:background="@drawable/bg_ptz_dir"
+                            android:contentDescription="@string/ipc_ptz_left"
+                            android:padding="14dp"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_back"
+                            android:tint="@color/ipc_primary" />
+
+                        <TextView
+                            android:id="@+id/btnPtzStop"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:layout_marginHorizontal="18dp"
+                            android:background="@drawable/bg_ptz_stop"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:text="@string/ipc_ptz_stop"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            android:textStyle="bold" />
+
+                        <ImageButton
+                            android:id="@+id/btnPtzRight"
+                            android:layout_width="56dp"
+                            android:layout_height="56dp"
+                            android:background="@drawable/bg_ptz_dir"
+                            android:contentDescription="@string/ipc_ptz_right"
+                            android:padding="14dp"
+                            android:rotation="180"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_back"
+                            android:tint="@color/ipc_primary" />
+                    </LinearLayout>
+
+                    <ImageButton
+                        android:id="@+id/btnPtzDown"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:background="@drawable/bg_ptz_dir"
+                        android:contentDescription="@string/ipc_ptz_down"
+                        android:padding="14dp"
+                        android:rotation="270"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_back"
+                        android:tint="@color/ipc_primary" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

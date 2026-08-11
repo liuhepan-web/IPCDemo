@@ -1,0 +1,14 @@
+## This file is a template. Copy to local.properties and fill in real values.
+## local.properties is gitignored — do NOT commit secrets.
+
+sdk.dir=/Users/YOUR_NAME/Library/Android/sdk
+
+# Tuya IoT platform AppKey / AppSecret (bound to package com.ipc.demo.set)
+appKey=YOUR_APP_KEY
+appSecret=YOUR_APP_SECRET
+
+# Optional: custom debug signing (SHA256 must match IoT platform binding)
+# KEYSTORE_FILE=/absolute/path/to/your.jks
+# KEYSTORE_PASSWORD=
+# KEY_ALIAS=key0
+# KEY_PASSWORD=
