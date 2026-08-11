@@ -33,7 +33,6 @@ app/src/main/java/com/ipc/demo/set/
 └── ...
 ```
 
-参考样例（非本 App 模块）：`tuya-ipc-ref/`。
 
 ---
 
