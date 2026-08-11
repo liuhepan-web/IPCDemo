@@ -81,7 +81,7 @@ public class CameraPanelActivity extends AppCompatActivity implements View.OnCli
     private View ptzBoard;
     private View fsActionBar;
     private View btnFsBack;
-    private View tvZoomHint;
+    private TextView tvZoomHint;
     private IThingSmartCameraP2P cameraP2P;
     private IThingIPCPTZ ptz;
     private TextView tvStatus;
@@ -248,18 +248,6 @@ public class CameraPanelActivity extends AppCompatActivity implements View.OnCli
         });
         final GestureDetector tapDetector = new GestureDetector(this,
                 new GestureDetector.SimpleOnGestureListener() {
-                    @Override
-                    public boolean onSingleTapConfirmed(MotionEvent e) {
-                        if (scaleFactor > 1.05f) {
-                            scaleFactor = 1f;
-                        } else {
-                            scaleFactor = 2f;
-                        }
-                        videoView.setScaleX(scaleFactor);
-                        videoView.setScaleY(scaleFactor);
-                        return true;
-                    }
-
                     @Override
                     public boolean onDoubleTap(MotionEvent e) {
                         scaleFactor = scaleFactor > 1.5f ? 1f : 3f;
@@ -747,9 +735,9 @@ public class CameraPanelActivity extends AppCompatActivity implements View.OnCli
 
     private void startFeature(Class<?> cls) {
         // Live + playback cannot share one device P2P session. Release before SD/cloud pages.
-        // Docs: stop preview / reconnect when switching live ↔ playback.
         if (cls == CameraPlaybackActivity.class || cls == CameraCloudStorageActivity.class) {
-            releaseCameraForHandoff();
+            releaseCameraThenStart(cls);
+            return;
         }
         Intent intent = new Intent(this, cls);
         intent.putExtra(IpcConstants.EXTRA_DEV_ID, devId);
@@ -757,28 +745,53 @@ public class CameraPanelActivity extends AppCompatActivity implements View.OnCli
     }
 
     /**
-     * Stop talk/preview and destroy P2P so playback page can connect cleanly.
+     * Stop live session then open feature. Avoid sync destroyP2P on UI (can ANR).
      */
-    private void releaseCameraForHandoff() {
+    private void releaseCameraThenStart(Class<?> cls) {
+        Intent intent = new Intent(this, cls);
+        intent.putExtra(IpcConstants.EXTRA_DEV_ID, devId);
         if (cameraP2P == null) {
+            startActivity(intent);
             return;
         }
-        try {
-            if (speaking) {
-                cameraP2P.stopAudioTalk(null);
-                speaking = false;
-            }
-            if (playing) {
-                cameraP2P.stopPreview(null);
-                playing = false;
-            }
-            cameraP2P.removeOnP2PCameraListener();
-            cameraP2P.disconnect(null);
-            cameraP2P.destroyP2P();
-        } catch (Throwable t) {
-            Log.w(TAG, "releaseCameraForHandoff", t);
-        }
+        final IThingSmartCameraP2P p2p = cameraP2P;
         cameraP2P = null;
+        speaking = false;
+        playing = false;
+        final java.util.concurrent.atomic.AtomicBoolean started =
+                new java.util.concurrent.atomic.AtomicBoolean(false);
+        final Runnable go = () -> {
+            if (!started.compareAndSet(false, true)) {
+                return;
+            }
+            try {
+                p2p.destroyP2P();
+            } catch (Throwable t) {
+                Log.w(TAG, "destroyP2P after handoff", t);
+            }
+            startActivity(intent);
+        };
+        try {
+            p2p.stopAudioTalk(null);
+            p2p.stopPreview(null);
+            p2p.removeOnP2PCameraListener();
+            p2p.disconnect(new OperationDelegateCallBack() {
+                @Override
+                public void onSuccess(int sessionId, int requestId, String data) {
+                    mainHandler.post(go);
+                }
+
+                @Override
+                public void onFailure(int sessionId, int requestId, int errCode) {
+                    mainHandler.post(go);
+                }
+            });
+        } catch (Throwable t) {
+            Log.w(TAG, "releaseCameraThenStart", t);
+            mainHandler.post(go);
+        }
+        // Fallback if disconnect callback never arrives.
+        mainHandler.postDelayed(go, 1200);
     }
 
     private void openCloud() {

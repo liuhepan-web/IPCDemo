@@ -54,6 +54,8 @@ import java.util.TimeZone;
 public class CameraPlaybackActivity extends AppCompatActivity {
 
     private static final String TAG = "CameraPlayback";
+    /** Limit timeline UI updates — per-frame runOnUiThread causes ANR / freeze. */
+    private static final long TIMELINE_UI_MIN_INTERVAL_MS = 400L;
 
     private String devId;
     private IThingSmartCameraP2P cameraP2P;
@@ -74,6 +76,7 @@ public class CameraPlaybackActivity extends AppCompatActivity {
     private String monthPrefix;
     /** Mode_60=1 放大 24h；Mode_600=2；Mode_3600=3 缩小 12h */
     private TimelineUnitMode timelineUnitMode = TimelineUnitMode.Mode_600;
+    private long lastTimelineUiUptimeMs;
 
     private final AbsP2pCameraListener p2pCameraListener = new AbsP2pCameraListener() {
         @Override
@@ -81,10 +84,18 @@ public class CameraPlaybackActivity extends AppCompatActivity {
                                           ByteBuffer byteBuffer2, int i1, int i2, int i3, int i4,
                                           long l, long l1, long l2, Object o) {
             super.onReceiveFrameYUVData(i, byteBuffer, byteBuffer1, byteBuffer2, i1, i2, i3, i4, l, l1, l2, o);
+            // Do NOT post every decoded frame to main thread — that ANRs CameraPlaybackActivity.
+            long now = android.os.SystemClock.uptimeMillis();
+            if (now - lastTimelineUiUptimeMs < TIMELINE_UI_MIN_INTERVAL_MS) {
+                return;
+            }
+            lastTimelineUiUptimeMs = now;
+            final long ptsSec = l;
             runOnUiThread(() -> {
-                if (timelineView != null) {
-                    timelineView.setCurrentTimeInMillisecond(l * 1000L);
+                if (isFinishing() || timelineView == null) {
+                    return;
                 }
+                timelineView.setCurrentTimeInMillisecond(ptsSec * 1000L);
             });
         }
     };
@@ -587,35 +598,49 @@ public class CameraPlaybackActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        // Unregister first so YUV callbacks stop flooding the main thread before teardown.
+        if (cameraP2P != null) {
+            try {
+                cameraP2P.removeOnP2PCameraListener();
+            } catch (Throwable ignored) {
+            }
+        }
         super.onPause();
-        cameraView.onPause();
+        if (cameraView != null) {
+            cameraView.onPause();
+        }
         if (isPlayback && cameraP2P != null) {
             cameraP2P.stopPlayBack(null);
             isPlayback = false;
         }
-        if (cameraP2P != null) {
-            cameraP2P.removeOnP2PCameraListener();
-            if (isFinishing()) {
-                cameraP2P.disconnect(new OperationDelegateCallBack() {
-                    @Override
-                    public void onSuccess(int i, int i1, String s) {
-                    }
+        if (cameraP2P != null && isFinishing()) {
+            cameraP2P.disconnect(new OperationDelegateCallBack() {
+                @Override
+                public void onSuccess(int i, int i1, String s) {
+                }
 
-                    @Override
-                    public void onFailure(int i, int i1, int i2) {
-                    }
-                });
-            }
+                @Override
+                public void onFailure(int i, int i1, int i2) {
+                }
+            });
         }
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         if (cameraP2P != null) {
-            cameraP2P.destroyP2P();
+            try {
+                cameraP2P.removeOnP2PCameraListener();
+            } catch (Throwable ignored) {
+            }
+            try {
+                cameraP2P.destroyP2P();
+            } catch (Throwable t) {
+                Log.w(TAG, "destroyP2P", t);
+            }
             cameraP2P = null;
         }
+        super.onDestroy();
     }
 
     private class DayAdapter extends RecyclerView.Adapter<DayAdapter.Holder> {

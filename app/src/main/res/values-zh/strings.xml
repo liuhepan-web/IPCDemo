@@ -128,7 +128,7 @@
     <string name="ipc_ptz_collapse">收起云台</string>
     <string name="ipc_ptz_hint">按住方向键转动云台，松手停止</string>
     <string name="ipc_fullscreen">横屏全屏</string>
-    <string name="ipc_zoom_hint">双指缩放 / 点击放大</string>
+    <string name="ipc_zoom_hint">双指缩放 / 双击放大</string>
     <string name="ipc_ptz">云台</string>
     <string name="ipc_ptz_up">上</string>
     <string name="ipc_ptz_down">下</string>
