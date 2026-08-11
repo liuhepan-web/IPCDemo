@@ -65,6 +65,4 @@
 - 仅使用 `local.properties`（已在 `.gitignore`）。  
 - 公开分享前请确认 Manifest / Gradle 中无硬编码密钥。
 
-## License
 
-按你们组织要求补充开源协议；示例代码仅供学习与集成参考。
