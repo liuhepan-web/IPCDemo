@@ -126,7 +126,8 @@ dependencies {
     implementation(libs.thingsmart.bizbundle.basekit)
     // 业务能力（打开面板/多语言等）；增值服务页跳转依赖
     implementation(libs.thingsmart.bizbundle.bizkit)
-    implementation(libs.facebook.soloader)
+    // Explicit coordinate — Version Catalog accessor may not sync into IDE classpath
+    implementation("com.facebook.soloader:soloader:0.10.5")
 
     // 摄像头二维码配网：https://developer.tuya.com/cn/docs/app-development/camera-scan-code-network-configuration?id=Kaixkcv3adu8y
     implementation(libs.zxing.core)

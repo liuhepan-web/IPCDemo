@@ -22,4 +22,6 @@ local.properties
 app/release/
 .kotlin/
 .cursor/
+# 内部交付摘要（不上库）
+docs/IPC_Demo_内部交付文档.md
 tuya-ipc-ref/

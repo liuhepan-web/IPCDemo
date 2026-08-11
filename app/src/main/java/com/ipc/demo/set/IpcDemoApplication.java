@@ -1,10 +1,10 @@
 package com.ipc.demo.set;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.soloader.SoLoader;
 import com.thingclips.smart.home.sdk.ThingHomeSdk;
 
 /**
@@ -21,15 +21,23 @@ public class IpcDemoApplication extends Application {
         super.onCreate();
         // ThingCameraView / SimpleDraweeView 依赖 Fresco，必须在创建预览页前初始化
         Fresco.initialize(this);
-        // MiniApp SDK 要求初始化 SoLoader
-        try {
-            SoLoader.init(this, false);
-        } catch (Throwable t) {
-            Log.e(TAG, "SoLoader init failed", t);
-        }
+        // MiniApp SDK 要求初始化 SoLoader（反射调用，避免 IDE/classpath 硬依赖编译失败）
+        initSoLoader(this);
         ThingHomeSdk.init(this);
         ThingHomeSdk.setDebugMode(true);
         DoorbellCallManager.getInstance().init(this);
         VideoCallModuleHelper.ensureRegistered(this);
+    }
+
+    /**
+     * Reflectively call {@code SoLoader.init(Context, boolean)}.
+     */
+    private static void initSoLoader(Context context) {
+        try {
+            Class<?> clz = Class.forName("com.facebook.soloader.SoLoader");
+            clz.getMethod("init", Context.class, boolean.class).invoke(null, context, false);
+        } catch (Throwable t) {
+            Log.e(TAG, "SoLoader init failed", t);
+        }
     }
 }
