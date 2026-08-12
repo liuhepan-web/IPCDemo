@@ -8,6 +8,8 @@ public final class IpcConstants {
     public static final String EXTRA_DEV_ID = "extra_dev_id";
     public static final String EXTRA_MSG_ID = "extra_msg_id";
     public static final String EXTRA_MEDIA_PATH = "extra_media_path";
+    public static final String EXTRA_IMAGE_URL = "extra_image_url";
+    public static final String EXTRA_IMAGE_KEY = "extra_image_key";
     public static final String TYPE_AC_DOORBELL = "ac_doorbell";
 
     public static final int CLARITY_SD = 2;

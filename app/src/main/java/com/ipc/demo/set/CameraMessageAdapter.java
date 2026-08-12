@@ -27,6 +27,8 @@ public class CameraMessageAdapter extends RecyclerView.Adapter<CameraMessageAdap
     public interface OnItemListener {
         void onItemClick(CameraMessageBean bean);
 
+        void onImageClick(CameraMessageBean bean);
+
         void onLongClick(CameraMessageBean bean);
     }
 
@@ -68,6 +70,26 @@ public class CameraMessageAdapter extends RecyclerView.Adapter<CameraMessageAdap
         holder.tvTime.setText(bean.getDateTime());
         holder.tvContent.setText(bean.getMsgTypeContent());
         bindImage(holder.ivSnapshot, bean.getAttachPics());
+        String[] videos = bean.getAttachVideos();
+        boolean hasVideo = videos != null && videos.length > 0 && !TextUtils.isEmpty(videos[0]);
+        boolean hasPic = !TextUtils.isEmpty(bean.getAttachPics());
+        if (hasVideo && hasPic) {
+            holder.tvMediaHint.setVisibility(View.VISIBLE);
+            holder.tvMediaHint.setText(R.string.ipc_msg_pic_and_video);
+        } else if (hasVideo) {
+            holder.tvMediaHint.setVisibility(View.VISIBLE);
+            holder.tvMediaHint.setText(R.string.ipc_msg_has_video);
+        } else if (hasPic) {
+            holder.tvMediaHint.setVisibility(View.VISIBLE);
+            holder.tvMediaHint.setText(R.string.ipc_msg_tap_image);
+        } else {
+            holder.tvMediaHint.setVisibility(View.GONE);
+        }
+        holder.ivSnapshot.setOnClickListener(v -> {
+            if (listener != null && hasPic) {
+                listener.onImageClick(bean);
+            }
+        });
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onItemClick(bean);
@@ -111,12 +133,14 @@ public class CameraMessageAdapter extends RecyclerView.Adapter<CameraMessageAdap
     static class Holder extends RecyclerView.ViewHolder {
         final TextView tvTime;
         final TextView tvContent;
+        final TextView tvMediaHint;
         final DecryptImageView ivSnapshot;
 
         Holder(View itemView) {
             super(itemView);
             tvTime = itemView.findViewById(R.id.tvTime);
             tvContent = itemView.findViewById(R.id.tvContent);
+            tvMediaHint = itemView.findViewById(R.id.tvMediaHint);
             ivSnapshot = itemView.findViewById(R.id.ivSnapshot);
         }
     }

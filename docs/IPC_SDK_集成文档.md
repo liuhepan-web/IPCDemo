@@ -175,7 +175,7 @@ boolean support = cloud != null && cloud.isSupportCloudStorage(devId);
 |------|----------|
 | SD 管理 | `CameraSdManageActivity` |
 | 卡录像 + 时间轴 | `CameraPlaybackActivity` |
-| 消息 | `CameraMessageActivity` |
+| 消息 | `CameraMessageActivity`（DP 134/106 + 告警图/视频） |
 | 云存储 | `CameraCloudStorageActivity` |
 | 门铃 | `DoorbellCallManager` + `CameraDoorBellActivity` |
 

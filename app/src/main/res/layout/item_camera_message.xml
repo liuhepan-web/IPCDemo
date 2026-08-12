@@ -13,6 +13,8 @@
         android:layout_width="88dp"
         android:layout_height="66dp"
         android:background="@color/ipc_border"
+        android:clickable="true"
+        android:focusable="true"
         android:scaleType="centerCrop" />
 
     <LinearLayout
@@ -37,5 +39,14 @@
             android:layout_marginTop="4dp"
             android:textColor="@color/ipc_ink_secondary"
             android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvMediaHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/ipc_accent"
+            android:textSize="12sp"
+            android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>
