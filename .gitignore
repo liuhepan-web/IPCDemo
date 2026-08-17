@@ -20,6 +20,7 @@ local.properties
 *.apk
 *.aab
 app/release/
+app/debug/
 .kotlin/
 .cursor/
 # 内部交付摘要（不上库）

@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btnEzConfig).setOnClickListener(this);
         findViewById(R.id.btnApConfig).setOnClickListener(this);
         findViewById(R.id.btnQrConfig).setOnClickListener(this);
+        findViewById(R.id.btnOfflineLog).setOnClickListener(this);
         findViewById(R.id.btnLogout).setOnClickListener(this);
     }
 
@@ -100,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return;
             }
             startActivity(new Intent(this, DeviceConfigQrActivity.class));
+        } else if (id == R.id.btnOfflineLog) {
+            startActivity(new Intent(this, OfflineLogActivity.class));
         } else if (id == R.id.btnLogout) {
             ThingHomeSdk.getUserInstance().logout(new ILogoutCallback() {
                 @Override

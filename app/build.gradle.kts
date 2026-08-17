@@ -104,6 +104,9 @@ android {
 
 configurations.all {
     exclude(group = "com.thingclips.smart", module = "thingsmart-modularCampAnno")
+    // thingsmart-logsdk embeds loguploader api builders; thingsmart 7.8 also pulls
+    // thingsmart-android-loguploader-api → Duplicate class. Keep logsdk's copy.
+    exclude(group = "com.thingclips.smart", module = "thingsmart-android-loguploader-api")
 }
 
 dependencies {
@@ -111,10 +114,15 @@ dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar"))))
     implementation(libs.alibaba.fastjson)
     implementation(libs.okhttp.urlconnection)
-    // App SDK 最新稳定安卓版
+    // App SDK 最新稳定安卓版（保持 7.8.0，不降到文档示例的 6.7.7）
     implementation(libs.thingsmart)
     // IPC SDK：https://developer.tuya.com/cn/docs/app-development/overview?id=Ka6km92o4do96
     implementation(libs.thingsmart.ipcsdk)
+    // 离线日志：https://developer.tuya.com/cn/docs/app-development/ipcsdklog?id=Kbvezkn5bkaam
+    // 文档写 5.0.2，但 maven-releases 上 5.0.2 404；用 5.0.0（含 TLogSDK/LogFileCallback）
+    // thing-log-sdk 用文档的 6.7.0；并排除 loguploader-api 避免与 logsdk 重复类
+    implementation("com.thingclips.smart:thingsmart-logsdk:5.0.0")
+    implementation("com.thingclips.smart:thing-log-sdk:6.7.0")
     // 时间轴：https://developer.tuya.com/cn/docs/app-development/timeline?id=Ka6nxw2j09f0r
     implementation(libs.thingsmart.ipc.timeline)
     // IPC ThingCameraView 依赖 Fresco（SimpleDraweeView）

@@ -167,6 +167,14 @@
                 android:text="@string/device_list_title" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnOfflineLog"
+                style="@style/Widget.IPCDemo.Button.Outline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/ipc_offline_log" />
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLogout"
                 style="@style/Widget.IPCDemo.Button.Ghost"
                 android:layout_width="match_parent"
